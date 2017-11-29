@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>load companies</name>
+    <name>load cnaes</name>
     <description />
     <extended_description />
     <trans_version />
@@ -493,16 +493,372 @@
   </connection>
   <order>
     <hop>
-      <from>get data</from>
+      <from>split</from>
+      <to>cnaes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>split</from>
       <to>company info</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>companies</from>
+      <to>sysdate = processed date</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>sysdate = processed date</from>
+      <to>split</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>company info</from>
-      <to>upsert companies</to>
+      <to>to next tranformation</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>unique cnae</from>
+      <to>upsert cnaes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cnaes</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>unique cnae</to>
       <enabled>Y</enabled>
     </hop>
   </order>
+  <step>
+    <name>cnaes</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>CNAE09</name>
+        <rename>CNAE</rename>
+      </field>
+      <field>
+        <name>ACTIVIDAD</name>
+      </field>
+      <field>
+        <name>FECHAPROCESADO</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>companies</name>
+    <type>ExcelInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <header>Y</header>
+    <noempty>Y</noempty>
+    <stoponempty>N</stoponempty>
+    <filefield />
+    <sheetfield />
+    <sheetrownumfield />
+    <rownumfield />
+    <sheetfield />
+    <filefield />
+    <limit>0</limit>
+    <encoding />
+    <add_to_result_filenames>Y</add_to_result_filenames>
+    <accept_filenames>N</accept_filenames>
+    <accept_field />
+    <accept_stepname />
+    <file>
+      <name>${Internal.Entry.Current.Directory}/data/MADRID_COMPANIES.xlsx</name>
+      <filemask />
+      <exclude_filemask />
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>CIF</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>EMPRESA</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>DIRECCION</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>CODPOSTAL</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>COD_POBLACION</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>POBLACION</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>COD_PROV</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>PROVINCIA</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>TELEFONO</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>CNAE09</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>ACTIVIDAD</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>FUNDACION</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>TIPO EMPRESA</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>VENTAS EUROS</name>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>RANGO_VENTAS</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>EMPLEADOS</name>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>ESTRATO_ASALARIADOS</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>PAISMATRIZ</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+    </fields>
+    <sheets>
+      <sheet>
+        <name>BD</name>
+        <startrow>0</startrow>
+        <startcol>0</startcol>
+      </sheet>
+    </sheets>
+    <strict_types>N</strict_types>
+    <error_ignored>N</error_ignored>
+    <error_line_skipped>N</error_line_skipped>
+    <bad_line_files_destination_directory />
+    <bad_line_files_extension>warning</bad_line_files_extension>
+    <error_line_files_destination_directory />
+    <error_line_files_extension>error</error_line_files_extension>
+    <line_number_files_destination_directory />
+    <line_number_files_extension>line</line_number_files_extension>
+    <shortFileFieldName />
+    <pathFieldName />
+    <hiddenFieldName />
+    <lastModificationTimeFieldName />
+    <uriNameFieldName />
+    <rootUriNameFieldName />
+    <extensionFieldName />
+    <sizeFieldName />
+    <spreadsheet_type>POI</spreadsheet_type>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>company info</name>
     <type>SelectValues</type>
@@ -517,77 +873,114 @@
     <fields>
       <field>
         <name>CIF</name>
-        <rename />
       </field>
       <field>
         <name>EMPRESA</name>
-        <rename />
       </field>
       <field>
         <name>DIRECCION</name>
-        <rename />
       </field>
       <field>
         <name>CODPOSTAL</name>
-        <rename />
       </field>
       <field>
         <name>COD_POBLACION</name>
-        <rename />
       </field>
       <field>
         <name>POBLACION</name>
-        <rename />
       </field>
       <field>
         <name>COD_PROV</name>
-        <rename />
       </field>
       <field>
         <name>PROVINCIA</name>
-        <rename />
       </field>
       <field>
         <name>TELEFONO</name>
-        <rename />
       </field>
       <field>
-        <name>CNAE</name>
-        <rename />
+        <name>CNAE09</name>
+        <rename>CNAE</rename>
       </field>
       <field>
         <name>FUNDACION</name>
-        <rename />
       </field>
       <field>
         <name>TIPO EMPRESA</name>
-        <rename />
       </field>
       <field>
         <name>VENTAS EUROS</name>
-        <rename />
       </field>
       <field>
         <name>RANGO_VENTAS</name>
-        <rename />
       </field>
       <field>
         <name>EMPLEADOS</name>
-        <rename />
       </field>
       <field>
         <name>ESTRATO_ASALARIADOS</name>
-        <rename />
       </field>
       <field>
         <name>PAISMATRIZ</name>
-        <rename />
       </field>
       <field>
         <name>FECHAPROCESADO</name>
-        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>split</name>
+    <type>Dummy</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>sysdate = processed date</name>
+    <type>SystemInfo</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>FECHAPROCESADO</name>
+        <type>system date (fixed)</type>
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -603,8 +996,8 @@
     </GUI>
   </step>
   <step>
-    <name>get data</name>
-    <type>RowsFromResult</type>
+    <name>to next tranformation</name>
+    <type>RowsToResult</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -613,116 +1006,6 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <fields>
-      <field>
-        <name>CIF</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>EMPRESA</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>DIRECCION</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>CODPOSTAL</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>COD_POBLACION</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>POBLACION</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>COD_PROV</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>PROVINCIA</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>TELEFONO</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>CNAE</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>FUNDACION</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>TIPO EMPRESA</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>VENTAS EUROS</name>
-        <type>Number</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>RANGO_VENTAS</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>EMPLEADOS</name>
-        <type>Number</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>ESTRATO_ASALARIADOS</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>PAISMATRIZ</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>FECHAPROCESADO</name>
-        <type>Date</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-    </fields>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -731,13 +1014,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>128</yloc>
+      <xloc>800</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>upsert companies</name>
+    <name>upsert cnaes</name>
     <type>InsertUpdate</type>
     <description />
     <distribute>Y</distribute>
@@ -752,96 +1035,21 @@
     <update_bypassed>N</update_bypassed>
     <lookup>
       <schema />
-      <table>company</table>
+      <table>cnae</table>
       <key>
-        <name>CIF</name>
-        <field>CIF</field>
+        <name>CNAE</name>
+        <field>CNAE</field>
         <condition>=</condition>
         <name2 />
       </key>
-      <value>
-        <name>CIF</name>
-        <rename>CIF</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>EMPRESA</name>
-        <rename>EMPRESA</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>DIRECCION</name>
-        <rename>DIRECCION</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>CODPOSTAL</name>
-        <rename>CODPOSTAL</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>CODPOBLACION</name>
-        <rename>COD_POBLACION</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>POBLACION</name>
-        <rename>POBLACION</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>CODPROVINCIA</name>
-        <rename>COD_PROV</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>PROVINCIA</name>
-        <rename>PROVINCIA</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>TELEFONO</name>
-        <rename>TELEFONO</rename>
-        <update>Y</update>
-      </value>
       <value>
         <name>CNAE</name>
         <rename>CNAE</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>FUNDACION</name>
-        <rename>FUNDACION</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>TIPOEMPRESA</name>
-        <rename>TIPO EMPRESA</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>VENTASEUROS</name>
-        <rename>VENTAS EUROS</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>RANGOVENTAS</name>
-        <rename>RANGO_VENTAS</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>EMPLEADOS</name>
-        <rename>EMPLEADOS</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>ESTRATOASALARIADOS</name>
-        <rename>ESTRATO_ASALARIADOS</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>PAISMATRIZ</name>
-        <rename>PAISMATRIZ</rename>
+        <name>ACTIVIDAD</name>
+        <rename>ACTIVIDAD</rename>
         <update>Y</update>
       </value>
       <value>
@@ -858,8 +1066,83 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>416</xloc>
-      <yloc>128</yloc>
+      <xloc>960</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>unique cnae</name>
+    <type>Unique</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <count_rows>N</count_rows>
+    <count_field />
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description />
+    <fields>
+      <field>
+        <name>CNAE</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>800</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>CNAE</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>672</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
